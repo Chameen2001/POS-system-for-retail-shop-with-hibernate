@@ -1,0 +1,61 @@
+DROP DATABASE IF EXISTS JDBC_COURSEWORK;
+CREATE DATABASE IF NOT EXISTS JDBC_COURSEWORK;
+USE JDBC_COURSEWORK;
+
+DROP TABLE IF EXISTS Customer;
+CREATE TABLE IF NOT EXISTS Customer (
+	cusId VARCHAR(6) NOT NULL,
+	cusTitle VARCHAR(5),
+	cusName VARCHAR(30),
+	address VARCHAR(30),
+	city VARCHAR(20),
+	province VARCHAR(20),
+	postCode VARCHAR(9),
+	CONSTRAINT PRIMARY KEY(cusId)
+);
+
+DESC Customer;
+
+CREATE TABLE IF NOT EXISTS `Order` (
+	cusId VARCHAR(6),
+	orderId VARCHAR(6) NOT NULL,
+	orderDate DATE,
+	cost DOUBLE,
+	orderTime TIME,
+	CONSTRAINT PRIMARY KEY(orderId),
+	CONSTRAINT FOREIGN KEY(cusId) REFERENCES Customer (cusId) ON DELETE CASCADE ON UPDATE CASCADE
+
+);
+
+DESC `Order`;
+
+CREATE TABLE IF NOT EXISTS Item (
+	itemCode VARCHAR(6) NOT NULL,
+	description VARCHAR(50),
+	packSize VARCHAR(20),
+	qtyOnHand INT(5),
+	unitPrice DECIMAL(6,2),
+	discount SMALLINT (3),
+	everyItem INT (4),
+	maxDiscount INT(4),
+	CONSTRAINT PRIMARY KEY(itemCode)
+);
+
+DESC Item;
+
+CREATE TABLE IF NOT EXISTS `Order Detail` (
+	orderId VARCHAR(6) NOT NULL,
+	itemCode VARCHAR(6) NOT NULL,
+	quantity INT(11),
+	discount DECIMAL(6,2),
+	unitPrice DECIMAL(8,2),
+	price DECIMAL(8,2),
+	percentage DECIMAL(6,2),
+	CONSTRAINT PRIMARY KEY(orderId,itemCode),
+	CONSTRAINT FOREIGN KEY(orderId) REFERENCES `Order` (orderId) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FOREIGN KEY(itemCode) REFERENCES Item (itemCode) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DESC `Order Detail`;
+
+Insert Into Customer Values('C-001','Mr','Chameen Dilhara','Ganemulla','Gampaha','Western','11020');
